@@ -7,25 +7,15 @@ timeout: 1200s
 tags: ['test']
 
 steps:
-  - id: deploy-first
+  - id: deploy
     name: gcr.io/cloud-builders/gke-deploy
     args:
       - run
-      - --filename=./gcp/first
+      - --filename=./gcp/main
       - --cluster=${_GKE_CLUSTER}
       - --location=${_GKE_REGION}
       - --namespace=${_NAMESPACE}
-      - --output=gke-output/test-first
-      - --timeout=10m0s
-  - id: deploy-second
-    name: gcr.io/cloud-builders/gke-deploy
-    args:
-      - run
-      - --filename=./gcp/second
-      - --cluster=${_GKE_CLUSTER}
-      - --location=${_GKE_REGION}
-      - --namespace=${_NAMESPACE}
-      - --output=gke-output/test-second
+      - --output=gke-output/test
       - --timeout=10m0s
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
