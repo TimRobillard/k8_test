@@ -10,6 +10,7 @@ substitutions:
   _APP_NAME: k8-test
   _TAG: '${BRANCH_NAME}-${SHORT_SHA}'
   _MLS_TYPE: TEST
+  _MLS_TYPES: ""
 
 steps:
   - id: build-image
@@ -24,6 +25,7 @@ steps:
       - -c
       - |
         while IFS= read -r mlsType; do
+        _MLS_TYPES=$_MLS_TYPES,$mlsType
         gcloud builds submit \
         --config=cloudbuild-deploy.yaml \
         --substitutions=_MLS_TYPE=$mlsType,_TAG=${_TAG}
@@ -35,12 +37,8 @@ steps:
     args:
       - -c
       - |
-        T=
-        while IFS= read -r mlsType; do
-        T=$T,$mlsType
-        done < ./gcp/mlsTypes.txt
         helm template ./gcp/ingress \
-        --set=mlsTypes={${T:1}} \
+        --set=mlsTypes={${_MLS_TYPES:1}} \
         --output-dir=./helm-output-ingress || { exit 1; }
     waitFor: [deploy-services]
 
