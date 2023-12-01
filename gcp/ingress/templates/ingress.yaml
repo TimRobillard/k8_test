@@ -16,13 +16,15 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: hello-world-1
+            name: k8-test-aar
             port:
-              number: 60000
-      - path: /v2
+              number: 8080
+    {{- range $.Values.mlsTypes }}
+      - path: /{{ . }}
         pathType: ImplementationSpecific
         backend:
           service:
-            name: hello-world-2
+            name: k8-test-{{ . }}
             port:
-              number: 80
+              number: 8080
+    {{- end }}

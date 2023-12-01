@@ -4,26 +4,51 @@ options:
   machineType: E2_HIGHCPU_8
 
 timeout: 1200s
-tags: ['test']
+tags: ['k8-test', '$TAG_NAME', '$SHORT_SHA']
+
+substitutions:
+  _APP_NAME: k8-test
+  _TAG: '${BRANCH_NAME}-${SHORT_SHA}'
 
 steps:
-  - id: deploy
-    name: gcr.io/cloud-builders/gke-deploy
+  - id: build-image
+    name: gcr.io/kaniko-project/executor
     args:
-      - run
-      - --filename=./gcp/main
-      - --cluster=${_GKE_CLUSTER}
-      - --location=${_GKE_REGION}
-      - --namespace=${_NAMESPACE}
-      - --output=gke-output/test
-      - --timeout=10m0s
+      - --destination=gcr.io/$PROJECT_ID/$_APP_NAME:$_TAG
+      - --cache=true
+  - id: deploy-services
+    name: gcr.io/$PROJECT_ID/helm
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        MLS_TYPES=
+        while IFS= read -r mlsType; do
+        MLS_TYPES=$MLS_TYPES,$mlsType
+        gcloud builds submit \
+        --config=cloudbuild-deploy.yaml \
+        --substitutions=_MLS_TYPE=$mlsType,_TAG=${_TAG}
+        done < ./gcp/mlsTypes.txt
+    waitFor: [build-image]
+  - id: helm-ingress
+    name: gcr.io/$PROJECT_ID/helm
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        helm template ./g cp/helm \
+        --set=mlsTypes={${MLS_TYPES:1}} \
+        --output-dir=./helm-output-ingress || { exit 1; }
+    waitFor: [deploy-services]
+
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
     args:
       - run
-      - --filename=./gcp/ingress
+      - --filename=./helm-output-ingress
       - --cluster=${_GKE_CLUSTER}
       - --location=${_GKE_REGION}
       - --namespace=${_NAMESPACE}
       - --output=gke-output/test-ingress
       - --timeout=10m0s
+    waitFor: [deploy-services]

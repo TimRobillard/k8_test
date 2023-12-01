@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-world-1
+  name: k8-test-{{ lower .Values.mlsType }}
 spec:
   type: NodePort
   selector:
@@ -9,5 +9,5 @@ spec:
     version: one
   ports:
   - protocol: TCP
-    port: 60000
-    targetPort: 50000
+    port: 8080
+    targetPort: 8081
