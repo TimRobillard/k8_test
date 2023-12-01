@@ -23,6 +23,7 @@ steps:
     args:
       - -c
       - |
+        MLS_TYPES=
         while IFS= read -r mlsType; do
         MLS_TYPES=$MLS_TYPES,$mlsType
         gcloud builds submit \
@@ -36,7 +37,7 @@ steps:
     args:
       - -c
       - |
-        helm template ./gcp/helm \
+        helm template ./gcp/ingress \
         --set=mlsTypes={${MLS_TYPES:1}} \
         --output-dir=./helm-output-ingress || { exit 1; }
     waitFor: [deploy-services]
