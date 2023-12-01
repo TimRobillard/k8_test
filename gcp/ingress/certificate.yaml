@@ -1,0 +1,7 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: k8-cert
+spec: 
+  domains:
+    - k.ohohoh.ca
