@@ -35,12 +35,12 @@ steps:
     args:
       - -c
       - |
-        MLS_TYPES=
+        T=
         while IFS= read -r mlsType; do
-        MLS_TYPES=$MLS_TYPES,$mlsType
+        T=$T,$mlsType
         done < ./gcp/mlsTypes.txt
         helm template ./gcp/ingress \
-        --set=mlsTypes={${MLS_TYPES:1}} \
+        --set=mlsTypes={${T:1}} \
         --output-dir=./helm-output-ingress || { exit 1; }
     waitFor: [deploy-services]
 
