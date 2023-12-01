@@ -37,7 +37,7 @@ steps:
     args:
       - -c
       - |
-        helm template ./g cp/helm \
+        helm template ./gcp/helm \
         --set=mlsTypes={${MLS_TYPES:1}} \
         --output-dir=./helm-output-ingress || { exit 1; }
     waitFor: [deploy-services]
