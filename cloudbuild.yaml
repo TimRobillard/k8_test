@@ -23,7 +23,7 @@ steps:
     args:
       - -c
       - |
-        MLS_TYPES=
+        MLS_TYPES=""
         while IFS= read -r mlsType; do
         MLS_TYPES=$MLS_TYPES,$mlsType
         gcloud builds submit \
