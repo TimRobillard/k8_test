@@ -6,6 +6,9 @@ options:
 timeout: 1200s
 tags: ['k8-test', '$TAG_NAME', '$SHORT_SHA']
 
+substitutions:
+  _MLS_TYPE: TEST
+
 steps:
   - id: helm-template
     name: gcr.io/$PROJECT_ID/helm

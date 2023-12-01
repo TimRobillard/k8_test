@@ -9,6 +9,7 @@ tags: ['k8-test', '$TAG_NAME', '$SHORT_SHA']
 substitutions:
   _APP_NAME: k8-test
   _TAG: '${BRANCH_NAME}-${SHORT_SHA}'
+  _MLS_TYPE: TEST
 
 steps:
   - id: build-image
