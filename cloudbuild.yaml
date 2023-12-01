@@ -32,7 +32,7 @@ steps:
         done < ./gcp/mlsTypes.txt
     waitFor: [build-image]
   - id: helm-ingress
-    name: gcr.io/$PROJECT_ID/helm
+    name: gcr.io/$PROJECT_ID/cloud-builders-helm
     entrypoint: bash
     args:
       - -c

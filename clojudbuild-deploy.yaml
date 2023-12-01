@@ -11,7 +11,7 @@ substitutions:
 
 steps:
   - id: helm-template
-    name: gcr.io/$PROJECT_ID/helm
+    name: gcr.io/$PROJECT_ID/cloud-builders-helm
     entrypoint: bash
     args: 
     - -c
