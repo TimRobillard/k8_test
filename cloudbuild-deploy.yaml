@@ -8,6 +8,7 @@ tags: ['k8-test', '$TAG_NAME', '$SHORT_SHA']
 
 substitutions:
   _MLS_TYPE: TEST
+  _PORT: 8080
 
 steps:
   - id: helm-template
