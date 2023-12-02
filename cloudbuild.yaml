@@ -28,7 +28,9 @@ steps:
         _MLS_TYPES=$_MLS_TYPES,$mlsType
         gcloud builds submit \
         --config=cloudbuild-deploy.yaml \
-        --substitutions=_MLS_TYPE=$mlsType,_TAG=${_TAG}
+        --substitutions=_MLS_TYPE=$mlsType,\
+        _TAG=${_TAG},_GKE_CLUSTER=${_GKE_CLUSTER},\
+        _GKE_REGION=${_GKE_REGION}
         done < ./gcp/mlsTypes.txt
     waitFor: [build-image]
   - id: helm-ingress
