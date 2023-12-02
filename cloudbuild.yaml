@@ -48,7 +48,7 @@ steps:
     name: gcr.io/cloud-builders/gke-deploy
     args:
       - run
-      - --filename=./helm-output-ingress
+      - --filename=./helm-output-ingress/k8-test/templates
       - --cluster=${_GKE_CLUSTER}
       - --location=${_GKE_REGION}
       - --namespace=${_NAMESPACE}
