@@ -5,3 +5,4 @@ region: us-central1
 gcpProjectId: ohohoh-334801
 
 mlsType: 'TEST'
+port: 8080

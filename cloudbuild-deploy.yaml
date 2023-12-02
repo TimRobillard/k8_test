@@ -19,6 +19,7 @@ steps:
       helm template ./gcp/helm \
       --set=imageTag=$_TAG \
       --set=mlsType=$_MLS_TYPE \
+      --set=port=$_PORT \
       --output-dir=./helm-output-$_MLS_TYPE || { exit 1; }
   - id: deploy
     name: gcr.io/cloud-builders/gke-deploy

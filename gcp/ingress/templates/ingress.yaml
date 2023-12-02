@@ -18,13 +18,13 @@ spec:
           service:
             name: k8-test-aar
             port:
-              number: 8080
-    {{- range $.Values.mlsTypes }}
-      - path: /{{ lower . }}
+              number: 8081
+    {{- range $i, $s := $.Values.mlsTypes }}
+      - path: /{{ lower $s }}
         pathType: ImplementationSpecific
         backend:
           service:
-            name: k8-test-{{ lower . }}
+            name: k8-test-{{ lower $s }}
             port:
-              number: 8080
+              number: {{ add 8080 $i }}
     {{- end }}

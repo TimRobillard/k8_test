@@ -13,26 +13,29 @@ substitutions:
   _MLS_TYPES: ""
 
 steps:
-  # - id: build-image
-  #   name: gcr.io/kaniko-project/executor
-  #   args:
-  #     - --destination=gcr.io/$PROJECT_ID/$_APP_NAME:$_TAG
-  #     - --cache=true
-  # - id: deploy-services
-  #   name: gcr.io/$PROJECT_ID/helm
-  #   entrypoint: bash
-  #   args:
-  #     - -c
-  #     - |
-  #       while IFS= read -r mlsType; do
-  #       _MLS_TYPES=$_MLS_TYPES,$mlsType
-  #       gcloud builds submit \
-  #       --config=cloudbuild-deploy.yaml \
-  #       --substitutions=_MLS_TYPE=$mlsType,\
-  #       _TAG=${_TAG},_GKE_CLUSTER=${_GKE_CLUSTER},\
-  #       _GKE_REGION=${_GKE_REGION}
-  #       done < ./gcp/mlsTypes.txt
-  #   waitFor: [build-image]
+  - id: build-image
+    name: gcr.io/kaniko-project/executor
+    args:
+      - --destination=gcr.io/$PROJECT_ID/$_APP_NAME:$_TAG
+      - --cache=true
+  - id: deploy-services
+    name: gcr.io/$PROJECT_ID/helm
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        PORT=8080
+        while IFS= read -r mlsType; do
+        _MLS_TYPES=$_MLS_TYPES,$mlsType
+        gcloud builds submit \
+        --config=cloudbuild-deploy.yaml \
+        --substitutions=_MLS_TYPE=$mlsType,\
+        _TAG=${_TAG},_GKE_CLUSTER=${_GKE_CLUSTER},\
+        _GKE_REGION=${_GKE_REGION}, \
+        _PORT=$PORT
+        (( PORT++ ))
+        done < ./gcp/mlsTypes.txt
+    waitFor: [build-image]
   - id: helm-ingress
     name: gcr.io/$PROJECT_ID/helm
     entrypoint: bash
@@ -45,7 +48,7 @@ steps:
         helm template ./gcp/ingress \
         --set=mlsTypes={${_MLS_TYPES:1}} \
         --output-dir=./helm-output-ingress || { exit 1; }
-    # waitFor: [deploy-services]
+    waitFor: [deploy-services]
 
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
