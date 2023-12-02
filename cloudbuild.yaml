@@ -42,7 +42,7 @@ steps:
         helm template ./gcp/ingress \
         --set=mlsTypes={${_MLS_TYPES:1}} \
         --output-dir=./helm-output-ingress || { exit 1; }
-    waitFor: [deploy-services]
+    # waitFor: [deploy-services]
 
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
