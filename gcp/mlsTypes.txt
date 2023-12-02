@@ -1,4 +1,3 @@
 TEST
 AAR
-BAR
 # extra line
