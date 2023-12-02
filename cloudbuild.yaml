@@ -39,6 +39,9 @@ steps:
     args:
       - -c
       - |
+        while IFS= read -r mlsType; do
+        _MLS_TYPES=$_MLS_TYPES,$mlsType
+        done < ./gcp/mlsTypes.txt
         helm template ./gcp/ingress \
         --set=mlsTypes={${_MLS_TYPES:1}} \
         --output-dir=./helm-output-ingress || { exit 1; }

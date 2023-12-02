@@ -20,11 +20,11 @@ spec:
             port:
               number: 8080
     {{- range $.Values.mlsTypes }}
-      - path: /{{ . }}
+      - path: /{{ lower . }}
         pathType: ImplementationSpecific
         backend:
           service:
-            name: k8-test-{{ . }}
+            name: k8-test-{{ lower . }}
             port:
               number: 8080
     {{- end }}
