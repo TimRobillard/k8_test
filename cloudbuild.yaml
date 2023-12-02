@@ -32,7 +32,7 @@ steps:
         --substitutions=_MLS_TYPE=$mlsType,\
         _TAG=${_TAG},_GKE_CLUSTER=${_GKE_CLUSTER},\
         _GKE_REGION=${_GKE_REGION}, \
-        _PORT=${_PORT}
+        _PORT="${_PORT}"
         (( _PORT++ ))
         done < ./gcp/mlsTypes.txt
     waitFor: [build-image]
