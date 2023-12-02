@@ -2,6 +2,6 @@ appName: k8-test
 imageName: k8-test
 imageTag: latest
 region: us-central1
-gcpProjectId: k8-test
+gcpProjectId: ohohoh-334801
 
 mlsType: 'TEST'
