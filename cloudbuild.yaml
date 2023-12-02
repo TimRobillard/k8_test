@@ -54,4 +54,4 @@ steps:
       - --namespace=${_NAMESPACE}
       - --output=gke-output/test-ingress
       - --timeout=10m0s
-    waitFor: [deploy-services]
+    waitFor: [helm-ingress]
