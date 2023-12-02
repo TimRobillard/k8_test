@@ -24,7 +24,7 @@ steps:
     args:
       - -c
       - |
-        PORT=8080
+        _PORT=8080
         while IFS= read -r mlsType; do
         _MLS_TYPES=$_MLS_TYPES,$mlsType
         gcloud builds submit \
@@ -32,7 +32,7 @@ steps:
         --substitutions=_MLS_TYPE=$mlsType,\
         _TAG=${_TAG},_GKE_CLUSTER=${_GKE_CLUSTER},\
         _GKE_REGION=${_GKE_REGION}, \
-        _PORT=$PORT
+        _PORT=${_PORT}
         (( PORT++ ))
         done < ./gcp/mlsTypes.txt
     waitFor: [build-image]
