@@ -28,7 +28,7 @@ steps:
       - --location=${_GKE_REGION}
       - --output=gke-output/test
       - --timeout=10m0s
-    waitFor: [helm-template]
+    waitFor: [build-image]
   - id: deploy-aar
     name: gcr.io/cloud-builders/gke-deploy
     args:
@@ -38,7 +38,7 @@ steps:
       - --location=${_GKE_REGION}
       - --output=gke-output/aar
       - --timeout=10m0s
-    waitFor: [helm-template]
+    waitFor: [build-image]
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
     args:
@@ -49,4 +49,4 @@ steps:
       - --namespace=${_NAMESPACE}
       - --output=gke-output/test-ingress
       - --timeout=10m0s
-    waitFor: [deploy-aar]
+    waitFor: [build-image]
