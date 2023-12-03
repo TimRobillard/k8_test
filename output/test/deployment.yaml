@@ -6,13 +6,13 @@ spec:
   selector:
     matchLabels:
       greeting: hello
-      version: one
+      mlsType: test
   replicas: 1
   template:
     metadata:
       labels:
         greeting: hello
-        version: one
+        mlsType: test
     spec:
       containers:
       - name: k8-test-test

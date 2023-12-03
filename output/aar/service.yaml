@@ -6,7 +6,7 @@ spec:
   type: NodePort
   selector:
     greeting: hello
-    version: one
+    mlsType: aar
   ports:
   - protocol: TCP
     port: 8080
