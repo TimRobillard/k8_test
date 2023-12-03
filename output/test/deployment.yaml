@@ -7,14 +7,12 @@ spec:
     matchLabels:
       greeting: hello
       version: two
-      mlsType: test
   replicas: 1
   template:
     metadata:
       labels:
         greeting: hello
         vresion: two
-        mlsType: test
     spec:
       containers:
       - name: k8-test-test

@@ -7,7 +7,6 @@ spec:
   selector:
     greeting: hello
     version: two
-    mlsType: test
   ports:
   - protocol: TCP
     port: 8081
