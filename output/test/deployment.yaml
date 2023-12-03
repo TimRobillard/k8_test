@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         greeting: hello
-        vresion: two
+        version: two
     spec:
       containers:
       - name: k8-test-test
