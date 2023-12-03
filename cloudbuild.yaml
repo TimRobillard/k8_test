@@ -14,11 +14,11 @@ substitutions:
   _PORT: '8080'
 
 steps:
-  - id: build-image
-    name: gcr.io/kaniko-project/executor
-    args:
-      - --destination=gcr.io/$PROJECT_ID/$_APP_NAME:$_TAG
-      - --cache=true
+  # - id: build-image
+  #   name: gcr.io/kaniko-project/executor
+  #   args:
+  #     - --destination=gcr.io/$PROJECT_ID/$_APP_NAME:$_TAG
+  #     - --cache=true
   - id: deploy-test
     name: gcr.io/cloud-builders/gke-deploy
     args:
@@ -28,7 +28,7 @@ steps:
       - --location=${_GKE_REGION}
       - --output=gke-output/test
       - --timeout=10m0s
-    waitFor: [build-image]
+    # waitFor: [build-image]
   - id: deploy-aar
     name: gcr.io/cloud-builders/gke-deploy
     args:
@@ -38,7 +38,7 @@ steps:
       - --location=${_GKE_REGION}
       - --output=gke-output/aar
       - --timeout=10m0s
-    waitFor: [build-image]
+    # waitFor: [build-image]
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
     args:
@@ -49,4 +49,4 @@ steps:
       - --namespace=${_NAMESPACE}
       - --output=gke-output/test-ingress
       - --timeout=10m0s
-    waitFor: [build-image]
+    # waitFor: [build-image]
