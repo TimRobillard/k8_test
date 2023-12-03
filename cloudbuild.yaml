@@ -19,45 +19,43 @@ steps:
     args:
       - --destination=gcr.io/$PROJECT_ID/$_APP_NAME:$_TAG
       - --cache=true
-  - id: deploy-services
+  - id: helm-template
     name: gcr.io/$PROJECT_ID/helm
     entrypoint: bash
-    args:
-      - -c
-      - |
-        while IFS= read -r mlsType; do
-        _MLS_TYPES=$_MLS_TYPES,$mlsType
-        gcloud builds submit \
-        --config=cloudbuild-deploy.yaml \
-        --substitutions=_MLS_TYPE=$mlsType,\
-        _TAG=${_TAG},_GKE_CLUSTER=${_GKE_CLUSTER},\
-        _GKE_REGION=${_GKE_REGION}, \
-        _PORT="${_PORT}" || { exit 1; }
-        (( _PORT++ ))
-        done < ./gcp/mlsTypes.txt
+    args: 
+    - -c
+    - |
+      helm template ./gcp/helm --set=imageTag=$_TAG --set=mlsType=TEST --output-dir=./helm-output-test || { exit 1; }
+      helm template ./gcp/helm --set=imageTag=$_TAG --set=mlsType=AAR --output-dir=./helm-output-aar || { exit 1; }
     waitFor: [build-image]
-  - id: helm-ingress
-    name: gcr.io/$PROJECT_ID/helm
-    entrypoint: bash
+  - id: deploy-test
+    name: gcr.io/cloud-builders/gke-deploy
     args:
-      - -c
-      - |
-        while IFS= read -r mlsType; do
-        _MLS_TYPES=$_MLS_TYPES,$mlsType
-        done < ./gcp/mlsTypes.txt
-        helm template ./gcp/ingress \
-        --set=mlsTypes={${_MLS_TYPES:1}} \
-        --output-dir=./helm-output-ingress || { exit 1; }
-    waitFor: [deploy-services]
-
+      - run
+      - --filename=./helm-output-test/k8-test/templates
+      - --cluster=${_GKE_CLUSTER}
+      - --location=${_GKE_REGION}
+      - --output=gke-output/test
+      - --timeout=10m0s
+    waitFor: [helm-template]
+  - id: deploy-aar
+    name: gcr.io/cloud-builders/gke-deploy
+    args:
+      - run
+      - --filename=./helm-output-aar/k8-test/templates
+      - --cluster=${_GKE_CLUSTER}
+      - --location=${_GKE_REGION}
+      - --output=gke-output/aar
+      - --timeout=10m0s
+    waitFor: [helm-template]
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
     args:
       - run
-      - --filename=./helm-output-ingress/k8-test/templates
+      - --filename=./gcp/ingress
       - --cluster=${_GKE_CLUSTER}
       - --location=${_GKE_REGION}
       - --namespace=${_NAMESPACE}
       - --output=gke-output/test-ingress
       - --timeout=10m0s
-    waitFor: [helm-ingress]
+    waitFor: [deploy-aar]

@@ -9,5 +9,5 @@ spec:
     version: one
   ports:
   - protocol: TCP
-    port: {{ .Values.port}}
+    port: 8080
     targetPort: 8081
