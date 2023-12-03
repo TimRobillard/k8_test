@@ -17,9 +17,8 @@ spec:
       containers:
       - name: k8-test-test
         image: "gcr.io/ohohoh-334801/k8-test:main-4da7f25"
-        imagePullPolicy: Always
         env:
         - name: "PORT"
-          value: "8081"
+          value: "50000"
         - name: "MLS_TYPE"
           value: TEST
