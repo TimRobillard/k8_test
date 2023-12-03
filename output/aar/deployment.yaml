@@ -5,16 +5,18 @@ metadata:
 spec:
   selector:
     matchLabels:
-      mlsType: aar
+      greeting: hello
+      version: one
   replicas: 1
   template:
     metadata:
       labels:
-        mlsType: aar
+        greeting: hello
+        version: one
     spec:
       containers:
       - name: k8-test-aar
-        image: "gcr.io/ohohoh-ohohoh-334801/k8-test:latest"
+        image: "gcr.io/ohohoh-334801/k8-test:latest"
         imagePullPolicy: Always
         env:
         - name: "PORT"
