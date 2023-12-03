@@ -19,20 +19,11 @@ steps:
     args:
       - --destination=gcr.io/$PROJECT_ID/$_APP_NAME:$_TAG
       - --cache=true
-  - id: helm-template
-    name: gcr.io/$PROJECT_ID/helm
-    entrypoint: bash
-    args: 
-    - -c
-    - |
-      helm template ./gcp/helm --set=imageTag=$_TAG --set=mlsType=TEST --output-dir=./helm-output-test || { exit 1; }
-      helm template ./gcp/helm --set=imageTag=$_TAG --set=mlsType=AAR --output-dir=./helm-output-aar || { exit 1; }
-    waitFor: [build-image]
   - id: deploy-test
     name: gcr.io/cloud-builders/gke-deploy
     args:
       - run
-      - --filename=./helm-output-test/k8-test/templates
+      - --filename=./output/test
       - --cluster=${_GKE_CLUSTER}
       - --location=${_GKE_REGION}
       - --output=gke-output/test
@@ -42,7 +33,7 @@ steps:
     name: gcr.io/cloud-builders/gke-deploy
     args:
       - run
-      - --filename=./helm-output-aar/k8-test/templates
+      - --filename=./output/aar
       - --cluster=${_GKE_CLUSTER}
       - --location=${_GKE_REGION}
       - --output=gke-output/aar
