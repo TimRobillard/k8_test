@@ -16,9 +16,10 @@ spec:
     spec:
       containers:
       - name: k8-test-aar
-        image: "gcr.io/ohohoh-334801/k8-test:main-4da7f25"
+        # image: "gcr.io/ohohoh-334801/k8-test:main-4da7f25"
+        image: "us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0"
         env:
         - name: "PORT"
           value: "8080"
         - name: "MLS_TYPE"
-          value: AAR
+          value: "AAR"
