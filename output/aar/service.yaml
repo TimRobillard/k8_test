@@ -5,7 +5,8 @@ metadata:
 spec:
   type: NodePort
   selector:
-    mlsType: aar
+    greeting: hello
+    version: one
   ports:
   - protocol: TCP
     port: 8080

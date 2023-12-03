@@ -5,12 +5,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      mlsType: aar
+      greeting: hello
+      version: one
   replicas: 1
   template:
     metadata:
       labels:
-        mlsType: aar
+        greeting: hello
+        version: one
     spec:
       containers:
       - name: k8-test-aar

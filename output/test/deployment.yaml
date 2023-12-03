@@ -5,12 +5,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      mlsType: test
+      greeting: hello
+      version: one
   replicas: 1
   template:
     metadata:
       labels:
-        mlsType: test
+        greeting: hello
+        version: one
     spec:
       containers:
       - name: k8-test-test
