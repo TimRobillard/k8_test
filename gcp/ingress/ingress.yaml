@@ -9,17 +9,18 @@ metadata:
     networking.gke.io/managed-certificates: k8-cert-2
 spec:
   rules:
-  - http:
+  - host: k8.paw-tracks.ca
+    http:
       paths:
       - path: /*
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: k8-test-aar
             port:
               number: 80
       - path: /test
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: k8-test-test
