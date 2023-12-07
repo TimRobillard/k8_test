@@ -5,21 +5,19 @@ metadata:
 spec:
   selector:
     matchLabels:
-      greeting: hello
-      version: two
+      mlsType: test
   replicas: 1
   template:
     metadata:
       labels:
-        greeting: hello
-        version: two
+        mlsType: test
     spec:
       containers:
-      - name: k8-test-test
-        image: "gcr.io/ohohoh-334801/k8-test:main-4da7f25"
-        # image: "us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0"
+      - name: k8-test
+        # image: "gcr.io/ohohoh-334801/k8-test:main-4da7f25"
+        image: "us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0"
         env:
         - name: "PORT"
-          value: "50000"
+          value: "8081"
         - name: "MLS_TYPE"
           value: "TEST"
