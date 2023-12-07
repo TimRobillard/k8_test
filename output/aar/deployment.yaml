@@ -21,3 +21,24 @@ spec:
           value: "8080"
         - name: "MLS_TYPE"
           value: "AAR"
+      ports:
+        -containerPort: 8081
+        protocol: TCP
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 8081
+          scheme: HTTP
+        periodSeconds: 10
+        failureThreshold: 6
+        successThreshold: 1
+        timeoutSeconds: 1
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 8081
+          scheme: HTTP
+        periodSeconds: 10
+        failureThreshold: 3
+        successThreshold: 1
+        timeoutSeconds: 1
