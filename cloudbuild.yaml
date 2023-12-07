@@ -14,24 +14,24 @@ substitutions:
   _PORT: '8080'
 
 steps:
-  - id: deploy-test
-    name: gcr.io/cloud-builders/gke-deploy
-    args:
-      - run
-      - --filename=./output/test
-      - --cluster=${_GKE_CLUSTER}
-      - --location=${_GKE_REGION}
-      - --output=gke-output/test
-      - --timeout=10m0s
-  - id: deploy-aar
-    name: gcr.io/cloud-builders/gke-deploy
-    args:
-      - run
-      - --filename=./output/aar
-      - --cluster=${_GKE_CLUSTER}
-      - --location=${_GKE_REGION}
-      - --output=gke-output/aar
-      - --timeout=10m0s
+  # - id: deploy-test
+  #   name: gcr.io/cloud-builders/gke-deploy
+  #   args:
+  #     - run
+  #     - --filename=./output/test
+  #     - --cluster=${_GKE_CLUSTER}
+  #     - --location=${_GKE_REGION}
+  #     - --output=gke-output/test
+  #     - --timeout=10m0s
+  # - id: deploy-aar
+  #   name: gcr.io/cloud-builders/gke-deploy
+  #   args:
+  #     - run
+  #     - --filename=./output/aar
+  #     - --cluster=${_GKE_CLUSTER}
+  #     - --location=${_GKE_REGION}
+  #     - --output=gke-output/aar
+  #     - --timeout=10m0s
   - id: deploy-ingress
     name: gcr.io/cloud-builders/gke-deploy
     args:

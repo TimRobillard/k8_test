@@ -12,16 +12,16 @@ spec:
   - http:
       paths:
       - path: /*
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: k8-test-aar
             port:
               number: 80
       - path: /test
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: k8-test-test
             port:
-              number: 60000
+              number: 80
